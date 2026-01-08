@@ -1,8 +1,5 @@
-import { EnrollmentFilters } from './components/EnrollmentFilters'
-import { EnrollmentsTable } from './components/EnrollmentsTable'
-import { NewEnrollmentForm } from './components/NewEnrollmentForm'
-import { Layout } from './components/Layout'
-import { useEnrollments } from './hooks/useEnrollments'
+import { EnrollmentFilters, EnrollmentsTable, NewEnrollmentForm, Layout } from '@/components'
+import { useEnrollments } from '@/hooks/useEnrollments'
 import {
   Alert,
   Box,

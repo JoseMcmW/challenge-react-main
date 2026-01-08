@@ -10,7 +10,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import type { Enrollment, EnrollmentStatus } from '../types/enrollment'
+import type { Enrollment, EnrollmentStatus } from '@/types/enrollment'
 
 type Props = {
   enrollments: Enrollment[]

@@ -1,4 +1,4 @@
-import type { Enrollment } from '../types/enrollment'
+import type { Enrollment } from '@/types/enrollment'
 
 export const mockEnrollments: Enrollment[] = [
   {

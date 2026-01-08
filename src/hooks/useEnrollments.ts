@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { fetchEnrollments } from '../api/enrollments'
-import type { Enrollment, EnrollmentStatus } from '../types/enrollment'
+import { fetchEnrollments } from '@/api/enrollments'
+import type { Enrollment, EnrollmentStatus } from '@/types/enrollment'
 
 type StatusFilter = EnrollmentStatus | 'all'
 

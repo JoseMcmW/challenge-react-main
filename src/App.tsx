@@ -3,6 +3,7 @@ import { fetchEnrollments } from './api/enrollments'
 import { EnrollmentFilters } from './components/EnrollmentFilters'
 import { NewEnrollmentForm } from './components/NewEnrollmentForm'
 import { Layout } from './components/Layout'
+import type { Enrollment, EnrollmentStatus } from './types/enrollment'
 import {
   Alert,
   Box,
@@ -24,40 +25,38 @@ import {
 } from '@mui/material'
 
 function App() {
-  const [enrollments, setEnrollments] = useState<any[]>([])
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<any>(null)
-  const [filteredEnrollments, setFilteredEnrollments] = useState<any[]>([])
-  const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [error, setError] = useState<Error | null>(null)
+  const [filteredEnrollments, setFilteredEnrollments] = useState<Enrollment[]>([])
+  const [statusFilter, setStatusFilter] = useState<EnrollmentStatus | 'all'>('all')
 
   useEffect(() => {
     let result = enrollments
 
     if (statusFilter !== 'all') {
-      result = enrollments.filter((e: any) => e.status === statusFilter)
+      result = enrollments.filter((e) => e.status === statusFilter)
     }
 
     setFilteredEnrollments(result)
-  }, [statusFilter])
+  }, [statusFilter, enrollments])
 
   useEffect(() => {
     setLoading(true)
     fetchEnrollments()
-      .then((data: any) => setEnrollments(data))
-      .catch((err: any) => setError(err))
+      .then((data) => setEnrollments(data))
+      .catch((err: Error) => setError(err))
       .finally(() => setLoading(false))
   }, [])
 
-  const addEnrollment = (enrollment: any) => {
+  const addEnrollment = (enrollment: Enrollment) => {
     setEnrollments([...enrollments, enrollment])
   }
 
   const confirmEnrollment = (id: string) => {
-    const index = enrollments.findIndex((e: any) => e.id === id)
-    if (index === -1) return
-
-    enrollments[index].status = 'confirmed'
-    setEnrollments(enrollments)
+    setEnrollments(enrollments.map((e) =>
+      e.id === id ? { ...e, status: 'confirmed' } : e
+    ))
   }
 
   if (loading) return (
@@ -109,7 +108,7 @@ function App() {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {filteredEnrollments.map((enrollment: any) => (
+                          {filteredEnrollments.map((enrollment) => (
                             <TableRow
                               key={enrollment.id}
                               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -122,7 +121,7 @@ function App() {
                               <TableCell>
                                 <Chip
                                   label={enrollment.status}
-                                  color={getStatusColor(enrollment.status) as any}
+                                  color={getStatusColor(enrollment.status)}
                                   size="small"
                                 />
                               </TableCell>
@@ -157,7 +156,7 @@ function App() {
   )
 }
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: EnrollmentStatus): 'success' | 'warning' | 'error' | 'default' => {
   switch (status) {
     case 'confirmed':
       return 'success'

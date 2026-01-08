@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import { TextField, Button, Box, Typography, Paper } from "@mui/material"
+import type { Enrollment } from '../types/enrollment'
 
 type Props = {
-    onCreate: (enrollment: any) => void
+    onCreate: (enrollment: Enrollment) => void
 }
 
 export const NewEnrollmentForm: React.FC<Props> = ({ onCreate }) => {
@@ -14,13 +15,13 @@ export const NewEnrollmentForm: React.FC<Props> = ({ onCreate }) => {
         e.preventDefault()
         if (!name || !email || !workshop) return
 
-        const newEnrollment = {
+        const newEnrollment: Enrollment = {
             id: crypto.randomUUID(),
             student_name: name,
             email,
             workshop,
             status: "pending",
-            created_at: new Date().toISOString(),
+            created_at: new Date(),
         }
 
         onCreate(newEnrollment)
